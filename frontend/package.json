@@ -11,6 +11,7 @@
     "react-alert": "^7.0.2",
     "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.13.1",
+    "react-loader-spinner": "^3.1.14",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.0",
     "react-reveal": "^1.2.2",
@@ -40,5 +41,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

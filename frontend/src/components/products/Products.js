@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatCurrency } from '../../utils/FormatCurr';
 import Fade from 'react-reveal/Fade';
 import Modal from 'react-modal';
 import Zoom from  'react-reveal/Zoom';
+// import Loader from 'react-loader-spinner';
+import { fetchProducts } from '../../actions/product';
 
 const Products = props => {
   const [product, setProduct] = useState(null);
+  const products = useSelector(state => state.product.products);
+  const loading = useSelector(state => state.product.loading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const openModal = product => {
     setProduct(product);
@@ -18,24 +28,30 @@ const Products = props => {
   return (
     <div>
       <Fade bottom cascade>
-        <ul className="products">
-          {props.products.map(product => (
-            <li key={product._id}>
-              <div className="product">
-                <a href={"#" + product._id} onClick={() => openModal(product)}>
-                  <img src={product.image} alt="Product"/>
-                  <p>{product.title}</p>
-                </a>
-                <div className="product-price">
-                  <div>
-                    {formatCurrency(product.price)}
+        {
+          loading ?
+           <div>Loading...</div>
+          :
+          <ul className="products">
+            {products.map(product => (
+              <li key={product._id}>
+                <div className="product">
+                  <a href={"#" + product._id} onClick={() => openModal(product)}>
+                    <img src={product.image} alt="Product"/>
+                    <p>{product.title}</p>
+                  </a>
+                  <div className="product-price">
+                    <div>
+                      {formatCurrency(product.price)}
+                    </div>
+                    <button className="button primary" onClick={() => props.addToCart(product)}>Add To Cart</button>
                   </div>
-                  <button className="button primary" onClick={() => props.addToCart(product)}>Add To Cart</button>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        }
+        
       </Fade>
       {
         product && (

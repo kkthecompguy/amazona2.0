@@ -1,12 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterProducts, sortProducts } from '../../actions/product';
 
-const Filter = props => {
+const Filter = () => {
+  const {products, size, sort, filtered} = useSelector(state => state.product);
+  const dispatch = useDispatch();
+
   return (
     <div className="filter">
-      <div className="filter-result">{props.count} Products</div>
+      <div className="filter-result">{products.length} Products</div>
       <div className="filter-sort">
         Order {" "}
-         <select name="sort" id="sort" value={props.sort} onChange={(e) => props.sortProducts(e.target.value)}>
+         <select name="sort" id="sort" value={sort} onChange={(e) => dispatch(sortProducts(products, e.target.value))}>
            <option>Latest</option>
            <option value="lowest">Lowest</option>
            <option value="highest">Highest</option>
@@ -14,7 +19,7 @@ const Filter = props => {
       </div>
       <div className="filter-size">
         Filter {" "}
-        <select name="size" id="size" value={props.size} onChange={e => props.filterProducts(e.target.value)}>
+        <select name="size" id="size" value={size} onChange={e => dispatch(filterProducts(filtered, e.target.value))}>
           <option value="">ALL</option>
           <option value="XS">XS</option>
           <option value="S">S</option>

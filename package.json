@@ -1,0 +1,38 @@
+{
+  "name": "amazona2.0",
+  "version": "1.0.0",
+  "description": "amazona ecommerce site with paypal payment",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "start": "node server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkthecompguy/amazona2.0.git"
+  },
+  "keywords": [
+    "ecommerce",
+    "amazona",
+    "shop",
+    "online"
+  ],
+  "author": "kkthecompguy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kkthecompguy/amazona2.0/issues"
+  },
+  "homepage": "https://github.com/kkthecompguy/amazona2.0#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.24",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  }
+}
