@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { formatCurrency } from '../../utils/FormatCurr';
 import Fade from 'react-reveal/Fade';
+import Modal from 'react-modal';
+import Zoom from 'react-reveal/Zoom';
+import { removeFromCart, createOrder, clearOrder } from '../../actions/cart';
 
 const Cart = props => {
   const [formData, setFormData] = useState({
@@ -8,25 +12,30 @@ const Cart = props => {
     email: "",
     address: ""
   });
-  const [showCheckout, setShowCheckout] = useState(false)
-  
+  const [showCheckout, setShowCheckout] = useState(false);
+  const {cartItems, order} = useSelector(state => state.cart);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     setFormData({...formData, [e.target.name]: e.target.value});
   }
 
-  const createOrder = e => {
+  const handleCreateOrder = e => {
     e.preventDefault();
     const order = {
       name,
       email,
       address,
-      cartItems
+      cartItems,
+      total: cartItems.reduce((a, c) => a + (c.price * c.count), 0)
     }
-    props.createOrder(order);
+    dispatch(createOrder(order));
   }
 
-  const { cartItems } = props;
+  const closeModal = () => {
+    dispatch(clearOrder())
+  }
+
   const { name, email, address } = formData;
   
   return (
@@ -37,6 +46,49 @@ const Cart = props => {
           You have {cartItems.length} in the cart {" "}
         </div>
       }
+
+      {
+        order && (
+          <Modal isOpen={true} ariaHideApp={false} onRequestClose={() => closeModal()}>
+            <Zoom>
+              <button onClick={() => closeModal()} className="close-modal">x</button>
+              <div className="order-details">
+                <h3 className="success-message">Your order has been placed</h3>
+                <h2>Order #{order._id}</h2>
+                <ul>
+                  <li>
+                    <div>Name:</div>
+                    <div>{order.name}</div>
+                  </li>
+                  <li>
+                    <div>Email:</div>
+                    <div>{order.email}</div>
+                  </li>
+                  <li>
+                    <div>Address:</div>
+                    <div>{order.address}</div>
+                  </li>
+                  <li>
+                    <div>Date:</div>
+                    <div>{order.createdAt}</div>
+                  </li>
+                  <li>
+                    <div>Total:</div>
+                    <div>{order.total}</div>
+                  </li>
+                  <li>
+                    <div>Cart:</div>
+                    <div>{order.cartItems.map(x => (
+                      <div>{x.count} x { x.title }</div>
+                    ))}</div>
+                  </li>
+                </ul>
+              </div>
+            </Zoom>
+          </Modal>
+        )
+      }
+
       <div>
         <div className="cart">
           <Fade left cascade>
@@ -50,7 +102,7 @@ const Cart = props => {
                     <div>{item.title}</div>
                     <div className="right">
                     {formatCurrency(item.price)} x {item.count} {" "}
-                    <button onClick={() => props.removeFromCart(item)} className="button">Remove</button>
+                    <button onClick={() => dispatch(removeFromCart(item))} className="button">Remove</button>
                     </div>
                   </div>
                 </li>
@@ -73,7 +125,7 @@ const Cart = props => {
               showCheckout && (
                 <Fade right cascade>
                   <div className="cart">
-                    <form onSubmit={e => createOrder(e)}>
+                    <form onSubmit={e => handleCreateOrder(e)}>
                       <ul className="form-container">
                         <li>
                           <label htmlFor="email">Email</label>

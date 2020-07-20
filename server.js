@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const products = require('./routes/products');
+const order = require('./routes/order');
+
 
 const app = express();
 
@@ -23,6 +25,7 @@ app.use(cors());
 
 // routes
 app.use('/api/products', products);
+app.use('/api/orders', order);
 
 
 app.get('/', (req, res) => {

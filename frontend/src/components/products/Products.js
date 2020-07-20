@@ -6,6 +6,8 @@ import Modal from 'react-modal';
 import Zoom from  'react-reveal/Zoom';
 // import Loader from 'react-loader-spinner';
 import { fetchProducts } from '../../actions/product';
+import { addToCart } from '../../actions/cart';
+
 
 const Products = props => {
   const [product, setProduct] = useState(null);
@@ -29,7 +31,7 @@ const Products = props => {
     <div>
       <Fade bottom cascade>
         {
-          loading ?
+          loading && products.length === 0 ?
            <div>Loading...</div>
           :
           <ul className="products">
@@ -44,7 +46,7 @@ const Products = props => {
                     <div>
                       {formatCurrency(product.price)}
                     </div>
-                    <button className="button primary" onClick={() => props.addToCart(product)}>Add To Cart</button>
+                    <button className="button primary" onClick={() => dispatch(addToCart(product))}>Add To Cart</button>
                   </div>
                 </div>
               </li>
@@ -81,8 +83,8 @@ const Products = props => {
                       {formatCurrency(product.price)}
                     </div>
                     <button onClick={() => {
-                      props.addToCart(product);
-                      closeModal()
+                      dispatch(addToCart(product));
+                      closeModal();
                       }} className="button primary">
                       Add To Cart
                     </button>
