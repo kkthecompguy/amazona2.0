@@ -2,7 +2,9 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
-  order: null
+  order: null,
+  orders: [],
+  loading: false
 }
 
 export default function (state=initialState, action) {
@@ -31,6 +33,22 @@ export default function (state=initialState, action) {
       return {
         ...state,
         cartItems: []
+      }
+    case actionTypes.ORDERS_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+    case actionTypes.ORDERS_LIST_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload,
+        loading: false
+      }
+    case actionTypes.ORDER_DELETE_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload
       }
     default:
       return state

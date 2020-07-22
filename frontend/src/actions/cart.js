@@ -1,5 +1,7 @@
 import *as actionTypes from './actionTypes';
 import axios from 'axios';
+import { returnErrors } from './errors';
+
 
 export const addToCart = product => (dispatch, getState) => {
   const cartItems = getState().cart.cartItems.slice();
@@ -23,6 +25,7 @@ export const addToCart = product => (dispatch, getState) => {
 
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }
+
 
 export const removeFromCart = product => (dispatch, getState) => {
   const { cart: { cartItems } } = getState();
@@ -60,6 +63,54 @@ export const createOrder = order => async dispatch => {
   }
 }
 
+
 export const clearOrder = () => dispatch => {
   dispatch({ type: actionTypes.CLEAR_ORDER });
+}
+
+
+export const fetchOrders = () => async (dispatch, getState) => {
+  const token = getState().auth.token;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+  try {
+    dispatch({ type: actionTypes.ORDERS_LIST_REQUEST });
+
+    const res = await axios.get('/api/orders', config);
+
+    dispatch({
+      type: actionTypes.ORDERS_LIST_SUCCESS,
+      payload: res.data
+    });
+
+  } catch (err) {
+    console.log(err);
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
+}
+
+
+export const deleteOrder = orderId => async (dispatch, getState) => {
+  const token = getState().auth.token;
+  const config = {
+    Authorization: `Bearer ${token}`
+  }
+
+  try {
+    await axios.delete(`/api/orders/${orderId}`, config);
+
+    const orders = getState().cart.orders.slice().filter(order => order._id !== orderId);
+
+    dispatch({
+      type: actionTypes.ORDER_DELETE_SUCCESS,
+      payload: orders
+    });
+
+  } catch (err) {
+    console.log(err);
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
 }

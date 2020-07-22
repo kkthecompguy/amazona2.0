@@ -19,6 +19,12 @@ textarea {
   font-family: Montserrat, Arial, Helvetica, sans-serif;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
 .grid-container {
   display: grid;
   grid-template-areas: "header"
@@ -27,6 +33,12 @@ textarea {
   grid-template-rows: 5rem 1fr 5rem;
   grid-template-columns: 1fr;
   height: 100%;
+}
+
+.container {
+  max-width: 110rem;
+  margin: auto;
+  padding: 0 1rem;
 }
 
 a {
@@ -42,6 +54,7 @@ header {
   background-color: #203040;
   color: #fff;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 1rem;
 }
@@ -50,6 +63,10 @@ header {
 header a {
   color: #fff;
   text-decoration: none;
+}
+
+.header-links {
+  padding-left: 1rem;
 }
 
 main {
@@ -279,4 +296,55 @@ input {
 
 .success-message {
   color: green;
+}
+
+.orders {
+  display: grid;
+  grid-template-areas: 'admin-info' 'orders-list';
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+
+.admin {
+  grid-area: admin-info;
+}
+
+.orders-table {
+  grid-area: orders-list;
+}
+
+.orders-item-list li {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.orders-item-list li img {
+  max-width: 5rem;
+  max-width: 5rem;
+}
+
+.signin {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin li {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.signin li input {
+  border-radius: .5rem;
+}
+
+.signin li button {
+  padding: 1rem;
+  background-color: #f0c040;
+  border: .1rem #808080 solid;
+  border-radius: .5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
 }

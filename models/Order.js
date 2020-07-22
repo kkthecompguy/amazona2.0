@@ -25,6 +25,14 @@ const OrderSchema = new mongoose.Schema({
   total: {
     type: Number,
     default: 0
+  },
+  paid: {
+    type: Boolean,
+    default: false
+  },
+  shipped: {
+    type: Boolean,
+    default: false
   }
 },
 {

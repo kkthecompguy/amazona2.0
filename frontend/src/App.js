@@ -1,31 +1,18 @@
 import React from 'react';
-import Products from './components/products/Products';
-import './App.css';
-import Filter from './components/products/Filter';
-import Cart from './components/cart/Cart';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import Orders from './components/orders/Orders';
+import SignIn from './components/auth/Signin';
 
 const App = () => {
-
   return (
-    <div className="grid-container">
-      <header>
-        <a href="/">Amazona</a>
-      </header>
-      <main>
-        <div className="content">
-        <div className="main">
-          <Filter />
-          <Products />
-        </div>
-        <div className="sidebar">
-          <Cart  />
-        </div>
-    </div>
-      </main>
-      <footer>
-        All right reserved &copy; 2020
-      </footer>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact={true} path="/" component={Home} />
+        <Route exact={true} path="/orders" component={Orders} />
+        <Route exact={true} path="/signin" component={SignIn} />
+      </Switch>
+    </Router>
   ); 
 }
 
